@@ -2,7 +2,6 @@
   "name": "infinitechess",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://fleshed.github.io/infinitechess",
   "type": "module",
   "workspaces": [
     "packages/*"
@@ -12,9 +11,7 @@
     "dev:server": "npm --workspace @infinitechess/server run dev",
     "dev:client": "npm --workspace @infinitechess/client run dev",
     "build": "npm --workspace @infinitechess/client run build && npm --workspace @infinitechess/server run build",
-    "start": "npm --workspace @infinitechess/server run start",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "start": "npm --workspace @infinitechess/server run start"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0",
