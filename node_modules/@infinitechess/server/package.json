@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "tsx src/index.ts"
+    "start": "node --import tsx src/index.ts"
   },
   "dependencies": {
     "@infinitechess/shared": "*",
