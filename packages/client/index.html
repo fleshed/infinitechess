@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infinite Chess</title>
+    <style>
+      html, body { margin: 0; padding: 0; background: #1a1a1a; overflow: hidden; height: 100%; }
+      body { font-family: system-ui, sans-serif; color: #eee; }
+      #board { display: block; width: 100vw; height: 100vh; cursor: crosshair; }
+      #hud {
+        position: fixed; top: 12px; left: 12px;
+        background: rgba(0,0,0,0.55); padding: 8px 12px;
+        border-radius: 6px; font-size: 13px; line-height: 1.4;
+        pointer-events: none; user-select: none;
+      }
+      #hud b { color: #ffd479; }
+      #coords {
+        position: fixed; top: 12px; right: 12px;
+        background: rgba(0,0,0,0.55); padding: 8px 12px;
+        border-radius: 6px; font-family: ui-monospace, Consolas, monospace;
+        font-size: 13px; line-height: 1.4; min-width: 130px; text-align: right;
+        pointer-events: none; user-select: none;
+      }
+      #coords b { color: #ffd479; }
+      #ctxmenu {
+        position: fixed; display: none;
+        background: rgba(20,20,20,0.95);
+        border: 1px solid #555; border-radius: 6px;
+        padding: 4px 0; min-width: 200px;
+        font-size: 13px; user-select: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        z-index: 10;
+      }
+      #ctxmenu button {
+        display: block; width: 100%; text-align: left;
+        background: transparent; border: 0; color: #eee;
+        padding: 6px 12px; cursor: pointer; font: inherit;
+      }
+      #ctxmenu button:hover { background: #2563eb; }
+      #ctxmenu button:disabled { color: #666; cursor: not-allowed; }
+      #ctxmenu hr { border: 0; border-top: 1px solid #444; margin: 4px 0; }
+      #ctxmenu .label { padding: 6px 12px; color: #888; font-size: 11px; }
+      #shop {
+        position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
+        display: flex; gap: 6px;
+        background: rgba(0,0,0,0.6); padding: 6px 8px;
+        border-radius: 8px; border: 1px solid #444;
+        font-size: 13px; user-select: none;
+        z-index: 5;
+      }
+      #shop button {
+        background: #1f2937; color: #eee; border: 1px solid #555;
+        border-radius: 4px; padding: 6px 10px; cursor: pointer;
+        font: inherit; min-width: 80px;
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+      }
+      #shop button:hover:not(:disabled) { background: #2563eb; border-color: #60a5fa; }
+      #shop button:disabled { color: #666; cursor: not-allowed; opacity: 0.55; }
+      #shop button.armed { background: #b45309; border-color: #fbbf24; color: #fff; }
+      #shop button .glyph { font-size: 18px; line-height: 1; }
+      #shop button .cost { font-size: 11px; color: #ffd479; }
+      #shop button:disabled .cost { color: #888; }
+    </style>
+  </head>
+  <body>
+    <canvas id="board"></canvas>
+    <div id="hud">
+      <div><b>infinite chess</b> &mdash; M6</div>
+      <div>WASD/arrows: pan &middot; wheel: zoom &middot; click piece: select &middot; CTRL+click: one &middot; SHIFT+click/drag: multi &middot; click target: move &middot; right-click piece: menu &middot; shop: buy &middot; ESC: cancel</div>
+      <div id="hud-status">connecting...</div>
+      <div id="hud-currency"></div>
+    </div>
+    <div id="coords">
+      <div>hover <b id="coords-hover">—</b></div>
+      <div>view <b id="coords-view">0, 0</b></div>
+    </div>
+    <div id="ctxmenu"></div>
+    <div id="shop"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+# THE VISION
+- Perpetual infinite chess board where players can create and topple chess empires
+- In the style of .io games, where a user can spawn into an active map and begin building their army
+- Pieces move based on a timer instead of by turn - many pieces can move at once
+- Resources squares that give Currency per second - varies depending on the square, holding these points will provide a cash flow
+- Double-clicking a Pawn should make it automatically pathfind to the nearest Resource
+- Bloons Tower Defense inspired buy menu the user can spend their acquired Currency to purchase new pieces or create environmental hazards on the map
+- Roaming bot pieces the player can capture and add to their army (pawns, knights only)
+- All pieces should have Stats, and should be able to level up (from levels 1-3) based on Age, Kills, and Profit
+- Players spawn with a King and four Pawns on all adjacent squares (above, below, to the left, to the right)
+- Board has tan and dark brown squares, we will add themes later
+## SQUARE SELECTIONS, PIECE MOVEMENTS, STATS, AND LEVELING UP BEHAVIORS
+- #### BOTS AND MULTIPLAYER:
+	- Game should be immediately playable, supporting secure multiplayer connections on the perpetual infinite board
+	- There should be rudimentary bots with their own kings and pawns, obeying the rules that have been laid out in this document
+		- These bots should be intelligent enough to be fun to play against, however PvP is the focus
+		- These bots should attempt to capture the player's pieces and each other's pieces
+		- These bots should attempt to capture and recapture resources
+		- These bots should attempt to use all Level Up features
+- #### **SQUARE SELECTION**:
+	- **Each valid square has its own respective border color depending on how it's being interacted with**:
+		- Square hovered over with no piece selected: dark gray
+		- Square chosen with no piece selected: light gray
+		- Square hovered over with a piece selected: dark blue
+		- Square chosen with a piece selected: dark green
+		- Invalid square hovered over or selected: dark red
+	- **Valid squares and their requirements:**
+		- Squares must exist in a checkerboard pattern by default (but can be changed using Currency, defined later)
+		- When a piece is selected, valid squares include those it can move or pathfind to
+		- Pieces cannot move to or pathfind through Holes in the map (defined later)
+- #### **PIECE MOVEMENT**/LEVELS/PROGRESSION:
+	- **GENERAL**:
+		- Piece movement/map updates shown in realtime, with all piece movement being at timed intervals
+		- The user should be able to select a piece on one square, and then select any arbitrary square, and the piece will pathfind its way there, following its respective piece movement rules. User should be able to perform this same action by dragging the piece to that square
+		- The user should be able to select multiple pieces on several squares by smoothly clicking and dragging a selection box as an overwatch selection method (similar to games like Rimworld, Xcom, Age of Empires, Kenshi), allowing several pieces to respond to a command at once (piece that ends up attacking, if an enemy piece is selected, is the one that reaches the enemy piece first). 
+		- Friendly pieces must not bump into each other, and must pause their pathfinding to wait for their teammates **telegraph to finish**, **pre-timing theirs to match with it perfectly, wasting no time**, or **when needed**, find a more optimized path to move more synchronously with them
+		- Pieces telegraph their movement, showing an informational arrow that smoothly appears and disappears. This arrow should display the time remaining until the piece makes it move. The arrow should be pointing to the selected destination square or nearest resource if in resource gathering mode (defined later)
+		- User should be able to right-click any piece to bring up a right-click menu that allows the user to Find Resource (which pathfinds to the nearest resource and attempts to capture it), Protect King (which pathfinds to the King and attempts to protect it, and if it is already protected, protect the pieces that are protecting it, and so on) and Sell (which allows the user to sell pieces for their their respective Piece value - Listed in Money, Combat, and Power > Combat > Piece Value)
+		- Selecting a piece should show the user a Piece Menu, allowing the user to select whether they want to Attack, Defend, Gather Resource, or Sell.
+	- **FORMATIONS:**
+		- When a friendly piece is able to recapture another friendly piece, they should automatically form a Formation. Only one piece needs to be able to recapture the other for the Formation to occur
+		- Formations can link together to create larger formations, resulting in complicated defenses or attacks
+		- Formations should be able to be selected in their entirety by simply clicking on them, which will automatically highlight all pieces in the Formation. Holding CTRL should allow the user to select an individual piece
+		- Pieces in Formations should automatically attempt to Recapture each other if taken, when applicable
+		- Pawns are special - they can cause Kings, Queens, and Rooks to become "sticky" by default when adjacent or diagonal to them (as applicable), adding them automatically to a Formation with the pawn, meaning that whenever the Formation including the pawn and the valid piece is moved, the other pieces move in unison with them, maintaining their Formation structure
+		- When a King, Queen, Rook, or Pawn is no longer able to be recaptured by a piece in the Formation, it leaves the Formation and is no longer associated with it
+	- **ATTACKING**:
+		- The user should be able to click on any piece (or click and drag to select several pieces) on their team, and then click on any enemy piece, and it/they should automatically pathfind to it and attempt to capture it (respecting its movement rules and collisions, preventing movements if another piece occupies the next space) in realtime. 
+		- If multiple pieces are selected, the selected pieces should simply attack the enemy piece horde-style, defending themselves and auto-recapturing if the enemy stops the user's assault
+	- **DEFENDING**:
+		- The user should be able to click on any piece (or click and drag to select several pieces) on their team, and then click on any other piece on their team, and it/they should automatically pathfind to it and attempt to defend it via recapture, positioning themselves intelligently to retake the piece if captured
+	- **LEVELING UP**:
+		- Pieces can level up via Age, Kills, and Profit. Each upgrade requires Currency to complete. Costs 2x each respective piece value to upgrade to level 2, and 3x each respective piece value to upgrade to level 3.
+		- Age
+			- How long the piece has been alive
+			- Tracked in seconds since the piece was spawned/created
+		- Kills
+			- How many other pieces the piece has captured
+			- Tracked by kill count per piece type
+		- Profit
+			- How much Currency the piece has generated for its current team
+			- Tracked by how much Currency gained via Resource squares or Kills
+		- These attributes should be leveled in a formula that fairly allows the pieces to level up at a playable rate - not too slow, not too fast. May require a lot of playtesting to fine-tune
+	- **PAWNS:
+		- **Level 1**: Pawn is able to move in all four directions (up, down, left, right) and capture pieces in all four diagonal squares at a pace of 1s per move, one square at a time. 
+		- **Level 2**: Pawn gains the ability to move 2 squares if desired, with a cooldown of 10s (otherwise only moving 1 square). 
+		- **Level 3**: Pawn gains the ability to Fianchetto between diagonal pawn structures if they're up against them, up until any diagonal pawns finish their telegraphed movement to their next square
+	- **KNIGHTS**:
+		- **Level 1**: Knight is able to move in classic L shape (3 squares forward, one to to the side) in all normal directions it can in regular chess, at the pace of 1.5s per move, one move at a time
+		- **Level 2**: Knight is able to fake out an enemy piece, moving to a square, forcing the enemy piece to auto-recapture, but the knight returns to its previous square before the enemy can capture the piece
+		- **Level 3**: Knight is able to steal adjacent enemy pieces and convert them to the player's team with a 5s telegraph
+	- **BISHOPS**:
+		- **Level 1**: Bishop is able to move in its respective diagonals according to its assigned square color, 8 squares at a time, at the pace of 2s per move
+		- **Level 2**: Bishop is able to move 16 squares at a time, adds +0.1s to telegraph for every extra square beyond 8 (2.8s max with 16 squares)
+		- **Level 3**: Bishop is able to move 24 squares at a time, adds +0.2s to telegraph for every extra square (4.2s max with 24 squares)
+	- **ROOKS:
+		- **Level 1**: Rook is able to move through adjacent squares, 8 squares at a time, at the pace of 3s per move
+		- **Level 2**: Rook is able to move 16 squares at a time, adds +0.1s to telegraph for every extra square beyond 8 (2.8s max with 16 squares)
+		- **Level 3**: Rook is able to move 24 squares at a time, adds +0.2s to telegraph for every extra square (4.2s max with 24 squares)
+	- **QUEENS**:
+		- **Level 1**: Queen is able to move through adjacent and diagonal squares, 8 squares at a time, at the pace of 3s per move
+		- **Level 2**: Queen is able to move 16 squares at a time, adds +0.1s to telegraph for every extra square beyond 8 (2.8s max with 16 squares)
+		- **Level 3**: Queen is able to move 24 squares at a time, adds +0.2s to telegraph for every extra square (4.2s max with 24 squares)
+	- **KINGS**:
+		- **Level 1**: King can move to adjacent and diagonal squares, 1 square at a time, at a pace of 1s per move
+		- **Level 2**: King can castle with any friendly rook three or four squares away from it on a vertical or horizontal axis, as long as there is no piece in between them, and both pieces are inactive at the time of the castling (respect traditional chess castling piece placements to place the Kings and Rooks during this process)
+		- **Level 3**: King can spawn 4 new pawns around itself every 120s
+	- **BOMBS**:
+		- For 2500 Currency, the player can place a Bomb on the map, that destroys a 3x3 grid on the chessboard. These bombs can be placed up to 5 squares away from a friendly piece, but cannot be placed closer than 5 squares from an enemy. They telegraph their explosion, and explode after 5s, leaving behind Holes
+		- Bombs create Holes, displayed as a pitch black square. Pieces cannot move through Holes or interact with them whatsoever, until they are restored to their original state
+		- Floor/board squares should regenerate over time, with their regeneration time being displayed on each Hole (5m per hole)
+## MONEY, RESOURCES, AND POWER
+- **CURRENCY**:
+	- The name of the game's currency is Currency. It is used to buy and sell chess pieces, generate environmental threats, and sustain recaptures.
+	- Currency can be obtained by standing on Resource squares, capturing enemy pieces, selling pieces, and completing quests.
+- **RESOURCE SQUARES**:
+	- There should be Resource squares that, when a player leaves a peace on, generates them Currency over time. The resource squares should generate anywhere between 1-5 Currency/s.
+	- Only 1 out of every 115 squares should be Visible Resource squares, ordered so they're not uniformly spaced throughout the map
+	- Only 1 out of every 64 squares should be Hidden Resource squares, ordered so they're not uniformly spaced throughout the map, only visible once the player discovers it. When the player moves a piece off a Hidden Resource square, it remains visible, but only to them, not to others
+	- Resource squares should be given a Dark Purple, and it should switch to Light Purple when being captured
+	- Resource squares should display what the Currency/s the square can produce is VS what it could be (0/5 C/s if no piece is on it)
+- **COMBAT**:
+	- **PIECE VALUE**:
+		- Pawn: 100
+		- Knight: 200
+		- Bishop: 250
+		- Rook: 350
+		- Queen: 500
+		- King: 500
+	- **ATTACK**:
+		- User moves one of their pieces over an enemy piece while it is idle or during its telegraphed timer/arrow. Piece is taken and respective Currency value is added to captor's balance
+	- **RECAPTURE MODE**:
+		- User can set any of their pieces to Recapture Mode, allowing them to automatically re-capture friendly pieces if they're reachable to the selected piece (must obey movement rules of the piece, as always)
+	- **SIMULTANEOUS ATTACKS**:
+		- If two pieces happen to attack each other's squares within the same 0.2s time window - at the end of their telegraphed attack, one piece will become Intimidated and freeze, allowing the other one to capture it. The victor of this battle should be determined by its Piece type (weighted 40%) and its Level (weighted (60%)).
+- **PURCHASING PIECES**:
+	- User should be able to purchase pieces from the Store panel (should be docked on the right-hand of the screen). Displayed similar to Bloons Tower Defense, showing each piece, and their price value, marked up 2x
+	- The user should be able to left-click any piece (if they can afford it) and place it anywhere on the board within 5 squares of a piece they own but not within 5 squares of an enemy piece
+	- Unavailable/unaffordable pieces should be grayed out indicating they cannot be purchased
+	- Here, user can also purchase Bombs for 2500, which are a one-time use
